@@ -1,0 +1,23 @@
+<mat-toolbar style="height:30px;" color="primary">
+
+  <mat-icon class="example-icon" (click)="adminAddStoreDetail('')">favorite</mat-icon>
+
+  <button mat-button id="admin" name="admin" mat-raised-button color="accent" (click)="adminTown($event)">
+    T</button>
+    <button (click)="callCharttwoMethod('someArgument')">Call Charttwo Method with Arg</button>
+
+
+    <span class="example-spacer"></span>
+    <mat-icon class="material-icon" (click)="adminAddStoreDetail('gridList')">view_list</mat-icon>
+
+</mat-toolbar>
+<router-outlet></router-outlet>
+
+{{ state$ | async }} <br/>
+<a [href]="(state$ | async) || ''" target="_blank">{{ state$ | async }}</a>
+ <br/>
+<!-- <a [href]="link" target="_blank">{{ state$ | async }}</a> -->
+<!-- <a [routerLink]="link">{{ state$ | async }}</a> -->
+<span style="font-size: 40%">v0.13 &copy; 2017 Gracy girl enterprises</span>
+
+
