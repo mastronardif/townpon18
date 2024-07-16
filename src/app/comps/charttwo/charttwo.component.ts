@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
 
@@ -22,18 +22,17 @@ const customColorScheme: Color = {
   standalone: true,
   imports: [RouterModule, NgxChartsModule],
   templateUrl: './charttwo.component.html',
-  styleUrl: './charttwo.component.css',
+  styleUrls: ['./charttwo.component.css'],
 })
-export class CharttwoComponent {
+export class CharttwoComponent implements OnInit {
   private subscription!: Subscription;
   data: any[] = single;
   single: any[] = single;
-  // single2: any[] = single2;
   single3: any[] = single2;
 
-  // options
   gradient: boolean = false;
   animations: boolean = true;
+  view!: [number, number];
 
   colorScheme: Color = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
@@ -53,6 +52,8 @@ export class CharttwoComponent {
   }
 
   ngOnInit(): void {
+    this.updateView();
+
     this.subscription = this.sharedService.callCharttwoMethod.subscribe(
       (arg: any) => {
         this.yourMethod(arg);
@@ -60,61 +61,51 @@ export class CharttwoComponent {
     );
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(_event: any) {
+    this.updateView();
+  }
+
+  updateView() {
+    const contentContainer = document.querySelector('.content-container');
+    if (contentContainer) {
+      const width = contentContainer.clientWidth;
+      const height = contentContainer.clientHeight;
+      this.view = [width, height] as [number, number];
+    }
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
   yourMethod(arg: any): void {
-    // Your method logic here, using the argument
     console.log('Charttwo method called with arg:', arg);
     if (arg) {
-      this.data = [...this.single3]; // Copy of single2
+      this.data = [...this.single3];
     }
   }
 
   onSelect(event: any) {
     if (event) {
       console.log('Item clicked', event);
-
-      // Find the index of the clicked item
-      //const index = this.data.findIndex((item) => item.name === event.name);
       const itt = this.data.find((item) => item.name === event.name);
-      //this.stateService.setState('example', 'https://www.healthcare.gov' + this.data[index].url);
       this.stateService.setState('example', 'https://www.healthcare.gov' + itt.url);
 
-      // if (index !== -1) {
-      //   console.log('Index of clicked item:', index);
-      // } else {
-      //   console.log('Item not found in data array');
-      // }
-
-      // if (index % 2 === 0) {
-      //   this.data = [...this.single3]; // Copy of single2
-      // } else {
-      //   this.data = [...this.single]; // Copy of single
-      // }
-
-      // console.log(config.apiHealthcareGov);
-
-      const url = config.apiHealthcareGov; //"https://jsonplaceholder.typicode.com/posts/1";
+      const url = config.apiHealthcareGov;
       const formattedStr = config.proxy.replace('${url}', url);
-      // console.log('formattedStr', formattedStr);
 
       this.serviceTown
-        .getData(formattedStr) //config.apiHealthcareGov) //apiEndpointCocktailDrinks)
+        .getData(formattedStr)
         .subscribe((response) => {
-          // console.log(response);
-
           const mappedItems = response.map(
-            (drink: { title: any, url: any; bite: any }) => ({
+            (drink: { title: any; url: any; bite: any }) => ({
               value: drink.bite.length,
               name: drink.title,
               url: drink.url,
             })
           );
 
-          // this.data = mappedDrinks;
-          //this.data = mappedDrinks.slice(0, 50);
           this.data = getRandomItems(mappedItems, 50);
         });
     }
@@ -126,9 +117,6 @@ export class CharttwoComponent {
 }
 
 function getRandomItems<T>(items: T[], count: number): T[] {
-  // Shuffle the array
   const shuffled = items.sort(() => 0.5 - Math.random());
-
-  // Get the first 'count' items
   return shuffled.slice(0, count);
 }

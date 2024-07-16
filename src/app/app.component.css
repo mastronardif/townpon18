@@ -1,18 +1,32 @@
-.example-icon {
-  padding: 0 14px;
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; /* Prevent scrollbars */
 }
 
-.example-spacer {
-  flex: 1 1 auto;
+mat-toolbar {
+  flex-shrink: 0;
 }
 
-.example-fill-remaining-space {
-  flex: 1 1 auto;
+.content-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0; /* Remove unnecessary padding */
+  overflow: hidden; /* Prevent scrollbars */
 }
 
-button {
-min-height: 23px !important;
-min-width: 46px !important;
-font-size: 10px !important;
-line-height: 0px;
+ngx-charts-tree-map {
+  width: 100%;
+  height: 100%;
+}
+
+.footer {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
 }
