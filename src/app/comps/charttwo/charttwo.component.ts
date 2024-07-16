@@ -94,9 +94,14 @@ export class CharttwoComponent {
       //   this.data = [...this.single]; // Copy of single
       // }
 
-      console.log(config.apiHealthcareGov);
+      // console.log(config.apiHealthcareGov);
+
+      const url = config.apiHealthcareGov; //"https://jsonplaceholder.typicode.com/posts/1";
+      const formattedStr = config.proxy.replace('${url}', url);
+      // console.log('formattedStr', formattedStr);
+
       this.serviceTown
-        .getData(config.apiHealthcareGov) //apiEndpointCocktailDrinks)
+        .getData(formattedStr) //config.apiHealthcareGov) //apiEndpointCocktailDrinks)
         .subscribe((response) => {
           // console.log(response);
 
