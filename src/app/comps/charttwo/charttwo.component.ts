@@ -106,7 +106,7 @@ export class CharttwoComponent implements OnInit {
             })
           );
 
-          this.data = getRandomItems(mappedItems, 50);
+          this.data = getRandomItems(mappedItems, undefined); //50);
         });
     }
   }
@@ -116,7 +116,7 @@ export class CharttwoComponent implements OnInit {
   }
 }
 
-function getRandomItems<T>(items: T[], count: number): T[] {
+function getRandomItems<T>(items: T[], count: number | undefined): T[] {
   const shuffled = items.sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }
